@@ -5,6 +5,9 @@ import numpy as np
 cap = cv2.VideoCapture('LaneVideo.mp4')
 cap.set(cv2.CAP_PROP_FPS, 60)  # 設定 FPS 為 60
 
+fourcc = cv2.VideoWriter_fourcc(*'MJPG')
+out = cv2.VideoWriter('output.mp4', fourcc, 60, (640, 400))
+
 
 
 while cap.isOpened():
@@ -119,10 +122,13 @@ while cap.isOpened():
         x, y = int(ww/2)-1, hh-r
         cv2.line(img2, (x-i*15, y), (x-i*15, y-3), (0,255,0), 2)
         cv2.line(img2, (x+i*15, y), (x+i*15, y-3), (0,255,0), 2)
-
+    
+    out.write(img2)
     cv2.imshow('Result', img2)
+    
     if cv2.waitKey(10) & 0xFF == ord('q'):
         break
 
 cap.release()
+out.release()
 cv2.destroyAllWindows()
